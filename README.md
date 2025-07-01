@@ -33,6 +33,12 @@ The next step is to run synthesis. Before that we will have to run the ***prep -
 You can see at the end in the image that the preparation is complete
 
 
+#Review files after design prep and run synthesis
+
+
+
+
+
 
 
 

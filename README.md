@@ -78,6 +78,8 @@ Each entry in the report provides detailed information on signal transitions, de
 
 
 
+
+
 # Day 2 - Good floor planning considerations
 ## Chipfloor planning considerations
 Before going for floorplanning, we need some information which we can see from README.md in configuration directory
@@ -185,7 +187,279 @@ The cells that we can see in this zoomed-in Magic layout view are the same stand
 
 
 
+
+
 # Day 3 - Design library cell using Magic Layout and ngspice characterization
+
+## Labs for CMOS inverter ngspice simulations
+
+### IO placer revision
+
+So far, we have completed the floorplanning and placement stages. But if we want to modify the floorplan—for instance, to change the placement of pins (which are currently spaced equally)—we can do so using the set command.
+We need to examine the available configuration switches. From them, we can locate the variable env(FP_IO_MODE). By default, this is set to 1, which places the pins at equal distances. To customize the pin placement, we change its value to 2 using:
+***set ::env(FP_IO_MODE) 2***
+After updating this setting, we must rerun the floorplanning step to apply the new pin configuration. Once completed, open the layout in Magic using the magic -T command to visually inspect the changes in pin positions.
+
+![image](https://github.com/user-attachments/assets/c70f7100-4c9d-4e0b-b8b1-52fc100d30b8)
+
+After running the layout again, we can see that the cells are now stacked on top of each other. Before they were equidistant
+
+### Lab steps to git clone vsdstdcelldesign
+
+Clone the github repository using the command ***git clone add_the_address_of_the_repo***
+
+![image](https://github.com/user-attachments/assets/08c2e03e-7652-4fd1-ac26-84f7aa4f8173)
+
+After that you can see the vsdstdcelldesign folder using the command ***ls -ltr***. Go to that folder and see the files present there. You will be able to see the .mag file
+
+![image](https://github.com/user-attachments/assets/bb17a76a-d114-4bd4-9e76-fc1826a37f03)
+
+Before opening the mag file, we need the tech file, so we have to copy the file from its present location to this address (of the mag file). You can see the command for the same in the below image:
+
+![image](https://github.com/user-attachments/assets/0cabe5c6-7a57-4358-81d6-df65c9a53bb4)
+
+Now, opening the magic layout becomes easy because we have both files at the same location and it is not required to give full address of the files. Now, run the below command:
+
+![image](https://github.com/user-attachments/assets/fc556c46-0035-455b-855e-4285532aab35)
+
+The magic layout opens and we can see the CMOS inverter layout:
+
+![image](https://github.com/user-attachments/assets/118c2b56-d6cb-44a0-90e9-cd85adcd9c1b)
+
+
+## Inception of layout ̂: A CMOS faabrication process
+### Lab introduction to Sky130 basic layers layout and LEF using inverter
+
+In this layout, you will observe that each colour represents different layer or component
+- Blue-purple:	Local Interconnect (LI)	: First metal layer for short, local routing
+- Light purple:	Metal 1 (M1) :	First global metal routing layer
+- Pink	Metal : 2 (M2):	Second global metal routing layer
+- Solid dashed: line	N-Well :	Region for placing PMOS transistors
+- Green:	N-Diffusion	: Region for NMOS source/drain diffusion
+- Brown:	P-Diffusion	: Region for PMOS source/drain diffusion
+- Red:	Polysilicon Gate :	Gate material over the channel in transistors
+
+You can view the component name by first moving the **'+'** cursor over that component and pressing **s** key, followed by typing **what** command in the tkcon window
+
+![image](https://github.com/user-attachments/assets/234dfe2d-182e-445f-ae85-0a2cbceadf1a)
+
+You can see in the above image that the yellow boundary component is selected and is identified as **nmos**
+Now we can check connections too. For instance, we will move the cursor over the **Y** portion in the layout and press **s** 3 times. For the first press of **s**, the area gets selected and in the second press, 
+the entire thing to which the highlighted portion is connected to gets selected.
+Observe the below image:
+
+![image](https://github.com/user-attachments/assets/b18a087b-ecb9-4134-9390-bbdb12f3da05)
+
+**Observation**: We can observe that the area **Y** is connected to drains of PMOS and NMOS
+Now we will check if the source of PMOS is connected to vdd and the source of NMOS is connected to GROUND or not following the exact steps as before.
+
+Observe the below image:
+
+![image](https://github.com/user-attachments/assets/328ec820-666c-42e4-9f4f-ef316b8bd86a)
+
+**Observation**: We can see that source of PMOS is connected to the VDD line (white highlighted area)
+
+Observe the below image:
+
+![image](https://github.com/user-attachments/assets/9da16356-662c-42fa-942c-cfbae8ef33f4)
+
+**Observation**: We can see that source of NMOS is connected to the GROUND (white highlighted area)
+
+### Lab steps to create std cell layout and extract spice netlist
+NGspice simulation:
+To extract the layout on spice, use the command ***extract all***
+
+![image](https://github.com/user-attachments/assets/bc86329c-f754-4c82-9e76-8023af529549)
+
+Then check if the new file is added or not:
+
+![image](https://github.com/user-attachments/assets/53af9dc2-5f09-4586-ab93-2ec8c0f23bcc)
+
+As we can see, the file **sky130_inv.ext** is added.
+
+Now, we will use the file created to create spice file to be used with NG spice using command ***ext2spice cthresh rthresh 0*** and ***ext2spice*** in the tkcon window.
+
+![image](https://github.com/user-attachments/assets/6e8637b9-b7bc-45d6-9017-e6c3646040b3)
+
+Check the spice file using the command ***vim sky_130inv.spice***. The contents of the file are as follows:
+
+![image](https://github.com/user-attachments/assets/f0c8d08a-7508-44e6-8c19-a9dd33b99bc0)
+
+
+## Sky130 Tech File Labs
+### Lab steps to create final SPICE deck using Sky130 tech
+Check the dimensions of the grid box in the layout by selecting the grid box first and typing ***box*** command in the tkcon window:
+
+![image](https://github.com/user-attachments/assets/3dff595a-1929-42bc-a72c-bc03cd90e5a0)
+
+We need to update the **sky130_inv.spice** file by setting the scale to 0.01, including the pshort and nshort.lib files (in the 'libs' folder inside 'vsdstdcelldesign' folder), setting the supply voltage "VDD"
+to 3.3v by VDD VPWR 0 3.3V command. and similarly setting the value of VSS too. Now, we need to specify the input files by Va A VGND PULSE(0V 3.3V 0 0.1ns 2ns 4ns).
+Also adding the commands for the analysis like, .tran 1n 20n, .control , run,.endc,.end. The changes made are shown below:
+
+![image](https://github.com/user-attachments/assets/ec13d867-7315-4e80-b53d-051b6352ab92)
+
+After running the file using command ***ngspice sky130_inv.spice*** we get the following output:
+
+![image](https://github.com/user-attachments/assets/7f870699-9503-43ef-8d73-b51bdc15057d)
+
+We will plot the graph using command ***plot y vs time a*** command
+
+![image](https://github.com/user-attachments/assets/78daf2e4-932a-4899-a608-3eb4cb471dbc)
+
+The graph looks like this:
+
+![image](https://github.com/user-attachments/assets/080d73ea-2e91-4526-a7c5-39f59003334c)
+
+To make the graph more smoother, we can increse the C3 parameter from 0.024fF to 2fF. This is the output:
+
+![image](https://github.com/user-attachments/assets/26dea36c-5cde-4819-ad5e-123e87fa111d)
+
+
+### Lab steps to characterize inverter using sky130 model files
+
+Our objective is to find the values of 4 parameters namely:
+- rise time
+- fall time
+- propagation delay
+- cell fall delay
+
+Finding rise time:
+Rise time is the time it takes for a signal (usually a voltage signal) to transition from a low value to a high value. Specifically:Rise time is defined as the time taken for the output waveform to 
+rise from 20% to 80% of its final value. The beginning (0%) and end (100%) of transitions often consist of noise, ringing, or non-linear behavior.
+Measuring from 20% to 80% gives a more stable and accurate estimate of how fast the signal is transitioning.
+
+![image](https://github.com/user-attachments/assets/8b738c76-a30a-48e7-a263-32f03a7104d5)
+
+rise time= (2.2489 - 2.1819)e-09 = 66.92 psec
+
+Finding fall time:
+Fall time is the amount of time it takes for a digital signal to transition from a high value to a low value. Specifically: Fall time is defined as the time taken for the output waveform to drop from 
+80% to 20% of its final high value.
+
+![image](https://github.com/user-attachments/assets/12aecc00-6702-4f6a-8357-66a9f6079fc7)
+
+fall time= (4.09512 - 4.05264)e-09 = 42.51 psec
+
+Finding propagation delay:
+Time difference between 50% input and 50% output
+
+![image](https://github.com/user-attachments/assets/ef5462d6-f362-4dbd-8d43-a5b1215d58d3)
+
+propogation delay =(2.2106 - 2.15012)e-09 = 60.48 psec
+
+Finding cell fall delay:
+Cell Fall Delay is the time difference between the input signal reaching 50% of its rising transition and the output signal reaching 50% of its falling transition.
+
+![image](https://github.com/user-attachments/assets/4a78b24c-4e63-4740-b72a-cc87f0384c43)
+
+cell fall delay =(4.07735 - 4.04988)e-09 = 27.47 psec.
+
+With these steps, our inverter has been characterized.
+
+
+### Lab introduction to Sky130 pdk's and steps to download labs
+
+First download the lab files required for doing the DRC corrections using the command **wget website_URL** and extract the files using **tar xfz drc_tests.tgz**
+Go to drc_tests folder and run the command **ls -al** to see all directories. You will be able to see **magicrc file** using the command ***gvim .magicrc***
+
+![image](https://github.com/user-attachments/assets/cbe612fc-97bb-4759-b153-9cdb27d3ff92)
+
+Below is the content of .magicrc file:
+
+![image](https://github.com/user-attachments/assets/98a669c2-5253-4179-906b-86349158a3ca)
+
+
+### Lab introduction to Magic and steps to load Sky130 tech-rules
+
+open the magic layout using ***magic -d XR &*** and open a Met3 file. The layout now looks like this:
+
+![image](https://github.com/user-attachments/assets/2d01bdd6-60d3-4275-836a-f0f38dfba6e6)
+
+Observe the different layouts with different DRC values, called rule numbers. These rule number can be found at the google-skywater documentation. The link is:
+*skywater-pdk.readthedocs.io/en/main/rules/periphery.html#m3*
+
+Now select any layout area and type ***drc why*** in the tkcon window:
+
+![image](https://github.com/user-attachments/assets/00fdc6db-96e2-4faa-99c9-83444d460c17)
+
+Now move the cursor over metal3 icon and press **p** button and type ***pek*** in the tkcon window. After that, type ***cif see VIA2***. You will observe black squares within the layout
+
+![image](https://github.com/user-attachments/assets/b97ef6a2-6d9a-4bcd-a3c8-935f429036b5)
+
+Now type the ***load poly.mag*** command in tkcon window. This loads the poly.mag file
+
+![image](https://github.com/user-attachments/assets/05f9e2c2-7d60-4635-9071-3014a1da66e0)
+
+Select poly.9 and check for the same using the documentation from the link provided before.
+
+![image](https://github.com/user-attachments/assets/597e6337-fa4c-4dff-b3f7-e025f3376782)
+
+To find the error we can look up the sky130_inv.tech file. Make changes accordingly and save
+
+![image](https://github.com/user-attachments/assets/03f1dc9c-4f4c-4836-bf9e-c8fbf072e452)
+
+Next step is to type the comman ***tech load sky130_inv.tech*** in tkcon window and then ***drc check***
+
+![image](https://github.com/user-attachments/assets/6b16633f-7d2a-4422-9114-a350e7d193e2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -33,7 +33,31 @@ The next step is to run synthesis. Before that we will have to run the ***prep -
 You can see at the end in the image that the preparation is complete
 
 
-# Review files after design prep and run synthesis
+## Review files after design prep and run synthesis
+
+In the step of design preparation, a *merged.lef* file is created insode the *tmp* folder as you can see in the image below which you can open using ***less merged.lef*** in the appropriate directory. The merged.lef file is a combined LEF (Library Exchange Format) file generated during the OpenLANE flow. It includes:
+
+- Technology LEF – describes design rules, routing layers, via layers, etc.
+
+- Cell LEF – includes abstract layout info of standard cells and macros (pins, shapes, blockages, etc.)
+
+![merged.lef file](https://github.com/user-attachments/assets/594a32dd-6da2-4c6f-9389-d3db398fc61a)
+
+Now we will run the sysnthesis using ***run synthesis*** command in openlane 
+![run synthesis command](https://github.com/user-attachments/assets/b03d3a72-9782-4e7a-be0d-000b4a6dcd7d)
+
+
+## Steps to characterize synthesis results
+From the results of the synthesis you can see that the number of cells are **14876** and the D flip flops are **1613**
+![synthesis results](https://github.com/user-attachments/assets/fee7873e-4692-48ad-9856-29d387361861)
+
+The flop ratio can be calculated using the formula:
+               Number of D flip flops
+               -----------------------
+               Number of cells
+
+
+
 
 
 

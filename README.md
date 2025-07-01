@@ -129,6 +129,11 @@ After magic opens, we can see the below layout:
 ![image](https://github.com/user-attachments/assets/c760e738-ff35-47e4-80c6-1a40402cb5f7)
 
 After zooming in using the **z** key, you can observe that the input and output pins are equidistant. You can zoom out using **shift + z**
+
+![image after zooming in](https://github.com/user-attachments/assets/ec67e5fb-84b4-47af-ba95-4fa598098c33)
+
+The area highlighted by white boundary are the decap cells
+
 We can select an object by moving the **+** cursor over the object and pressing **s** key. Select an input pin and type ***what*** command in the tkcon  window. It shows the information about that pin
 
 ![image](https://github.com/user-attachments/assets/97b3119a-9a0c-46fc-80ba-1470da52d2e0)
@@ -138,6 +143,55 @@ As you can see from the image, the pin is at metal 3. Peforming the step for get
 ![image](https://github.com/user-attachments/assets/a5bfd4ec-9204-45c2-afc8-be55bc5df05b)
 
 The white boundary pin is the selected one and by typing the ***what*** command in the tkcon window you can see the details about it. It is in metal 2.
+
+After zooming in the lower area, you will be able to see vertical boxes with congested text:
+
+![image](https://github.com/user-attachments/assets/512a9676-088b-483d-b5dd-817bb0acf2e4)
+
+- Black boxes with text	: Standard cells (logic gates, flip-flops)
+- White rectangles	: Cell/block boundary or site
+- Horizontal lines	: Routed metal layers (typically M1)
+- Pink columns with blue text	: IO pins placed during floorplanning
+- Dense alignment :	Indicates digital standard cell row placement
+
+High Cell Density (close text) are standard cells like sky130_fd_sc_hd__* are tightly packed in rows.Each cell instance has a label, and when zoomed out, all these labels overlap.
+
+
+
+## Library binding and placement
+
+### Congestion aware placement using replace
+
+Currently, our main goal is not timing, it is congestion. Therefore, the focus is on minimizing congestion during placement.
+The placement process in OpenLANE happens in two stages: 
+Global Placement and Detailed Placement. During Global Placement, cell legalization is not performed; it focuses mainly on optimizing the wirelength to reduce routing complexity and congestion. 
+Detailed Placement follows Global Placement and ensures legalization, meaning all standard cells are placed within defined site boundaries without overlap.
+When we run the placement step, Global Placement is executed first with the main objective of minimizing total wirelength.
+After placement, we open the layout in Magic to visualize the actual standard cell placement. The view shown below illustrates how the cells are distributed and how the placement has been handled in terms of congestion and alignment.
+
+First run this command :
+
+![image](https://github.com/user-attachments/assets/b1f19c48-b09c-4b17-9b8a-0a517ef1ec82)
+
+Magic layout opens and you can see the actual standard cell placement:
+
+![image](https://github.com/user-attachments/assets/7eecda5a-0075-459e-9de2-2dae8a191844)
+
+Zomm into the layout and you can see the flip flops, gates etc as shown in the iamge:
+
+![image](https://github.com/user-attachments/assets/2c0538b2-4e9c-4ad2-b588-43cb4b3142a5)
+
+The cells that we can see in this zoomed-in Magic layout view are the same standard cells that appeared congested in the earlier, in those lower vertical boxes.
+
+
+
+# Day 3 - Design library cell using Magic Layout and ngspice characterization
+
+
+
+
+
+
 
 
 

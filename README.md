@@ -80,6 +80,7 @@ Each entry in the report provides detailed information on signal transitions, de
 
 
 
+
 # Day 2 - Good floor planning considerations
 ## Chipfloor planning considerations
 Before going for floorplanning, we need some information which we can see from README.md in configuration directory

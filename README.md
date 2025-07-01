@@ -1,1 +1,3 @@
-# VLSI-1
+# DAY 1: Inception of open-source EDA, OpenLANE and sky130 PDK
+
+# Design preparation step

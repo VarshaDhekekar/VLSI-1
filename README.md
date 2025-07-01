@@ -1,6 +1,6 @@
 # DAY 1: Inception of open-source EDA, OpenLANE and sky130 PDK
 
-# Design preparation step
+## Design preparation step
 To start Openlane, navigate to the openlane directory using the command ***cd Desktop/work/tools/openlane_working_dir/openlane*** and run the command ***docker*** 
 .Now type the command: ***./flow.tcl -interactive***. This will start openlane.
 
@@ -9,13 +9,13 @@ When you enter OpenLANE, you're entering a design automation environment that he
 flow.tcl — Full Automation
 This script is the main flow controller of OpenLANE.
 As the name implies, it "goes with the flow", executing all design steps:
--Synthesis
--Floorplanning
--Placement
--Clock tree synthesis (CTS)
--Routing
--DRC/LVS checks
--GDSII generation
+- Synthesis
+- Floorplanning
+- Placement
+- Clock tree synthesis (CTS)
+- Routing
+- DRC/LVS checks
+- GDSII generation
 
 Interactive mode in OpenLANE is essential when you want more control, flexibility, and visibility over each stage of the ASIC design flow.
 Now we need to load all packages which are needed to run the flow using command: ***package require openlane 0.9***
@@ -33,7 +33,9 @@ The next step is to run synthesis. Before that we will have to run the ***prep -
 You can see at the end in the image that the preparation is complete
 
 
-#Review files after design prep and run synthesis
+# Review files after design prep and run synthesis
+
+
 
 
 

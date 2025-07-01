@@ -404,6 +404,44 @@ Next step is to type the comman ***tech load sky130_inv.tech*** in tkcon window 
 
 
 
+### Lab exercise to implement poly resistor spacing to diff and tap
+
+To implement this, make changes to sky130_inv.tech again 
+
+![image](https://github.com/user-attachments/assets/26a60e7e-c51e-48e7-b794-8c7d5e52e912)
+
+Run the command ***drc check*** again in the tkcon window
+
+![image](https://github.com/user-attachments/assets/81332d4a-4358-4c53-ac2b-5a2945ee6edc)
+
+
+### Lab challenge exercise to describe DRC error as geometrical construct
+
+Again make changes to the sky130_inv.tech file
+
+![image](https://github.com/user-attachments/assets/b5fbe035-328b-49d1-8197-37e4cce4a620)
+
+![image](https://github.com/user-attachments/assets/01e68e5b-c4b2-4616-8d3e-1b869719f619)
+
+Now, our task is to find nwell.6 model error. For that, open the nwell.mag file in the magic tool. Observe the image below. Deep nwell is shown in yellow stripes and the nwell is shown in dotted green.
+
+![image](https://github.com/user-attachments/assets/64a9db62-f8ab-4394-a5d6-da3cd6a862b0)
+
+
+### Lab challenge to find missing or incorrect rules and fix them
+Execute the commands ***drc style drc(full)*** and ***drc check***.
+
+![image](https://github.com/user-attachments/assets/2814a3f3-257b-4615-aa51-afeef1ebb58f)
+
+
+
+
+
+
+
+
+
+
 
 
 

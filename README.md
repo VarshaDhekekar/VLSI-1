@@ -128,7 +128,22 @@ After magic opens, we can see the below layout:
 
 ![image](https://github.com/user-attachments/assets/c760e738-ff35-47e4-80c6-1a40402cb5f7)
 
-After zooming in using the **z** key, you can observe that the input and output pins are equidistant
+After zooming in using the **z** key, you can observe that the input and output pins are equidistant. You can zoom out using **shift + z**
+We can select an object by moving the **+** cursor over the object and pressing **s** key. Select an input pin and type ***what*** command in the tkcon  window. It shows the information about that pin
+
+![image](https://github.com/user-attachments/assets/97b3119a-9a0c-46fc-80ba-1470da52d2e0)
+
+As you can see from the image, the pin is at metal 3. Peforming the step for getting details about a vertical pin:
+
+![image](https://github.com/user-attachments/assets/a5bfd4ec-9204-45c2-afc8-be55bc5df05b)
+
+The white boundary pin is the selected one and by typing the ***what*** command in the tkcon window you can see the details about it. It is in metal 2.
+
+
+
+
+
+
 
 
 
